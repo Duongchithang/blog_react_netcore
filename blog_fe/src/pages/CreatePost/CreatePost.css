@@ -1,0 +1,47 @@
+.createPost-head{
+    margin-top: 50px;
+    text-align: center;
+    font-size: 35px;
+    color: var(--color-text);
+    font-weight: 600;
+}
+.around-editor{
+    border: 1px solid #adadad;
+    padding: 20px;
+    margin-top: 10px;
+}
+.container-text{
+    margin-top: 50px;
+}
+.text-title{
+    font-size: 25px;
+    color: var(--color-text);
+    font-weight: 600;
+}
+.text-choose{
+    font-size: 25px;
+    color: var(--color-text);
+    font-weight: 600;
+    cursor: pointer;
+}
+.text-description{
+    font-size: 25px;
+    font-weight: 600;
+    margin-top: 20px;
+    color: var(--color-text);
+}
+.editorClassName{
+    background-color: aliceblue;
+    min-height: 100px;
+    padding: 30px;
+}
+.public-DraftStyleDefault-block{
+    background-color: aquamarine;
+}
+.MuiSvgIcon-root{
+    color: aliceblue;
+}
+.codex-editor{
+    background-color: aliceblue;
+    color: black;
+}
