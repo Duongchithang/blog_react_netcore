@@ -5,11 +5,7 @@
     color: var(--color-text);
     font-weight: 600;
 }
-.around-editor{
-    border: 1px solid #adadad;
-    padding: 20px;
-    margin-top: 10px;
-}
+
 .container-text{
     margin-top: 50px;
 }

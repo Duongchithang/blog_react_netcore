@@ -1,4 +1,6 @@
+using blog_backend.IResository;
 using blog_backend.Models;
+using blog_backend.Service;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +17,8 @@ builder.Services.AddDbContext<BlogContext>((option) =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 });
+builder.Services.AddScoped<IJsonWebToken, JsonWebToken>();
+builder.Services.AddScoped<HashPassword>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

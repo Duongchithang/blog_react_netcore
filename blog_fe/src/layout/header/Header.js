@@ -4,11 +4,12 @@ import "./Header.css";
 function Header() {
   console.log(">>> Header Mount");
   return (
-    <div className="container">
-      <div className="container-fluid p-0 container-navbar">
+   <div className="container-header">
+     <div className="container">
+      <div className="container-navbar">
         <div className="navbar navbar-expand-lg ">
           <Link to={"/"}  className="navbar-brand logo">
-            CHITHANGBLOG
+            CHITHANGDEVBLOG
           </Link>
           <button
             className="navbar-toggler"
@@ -70,6 +71,7 @@ function Header() {
         </div>
       </div>
     </div>
+   </div>
   );
 }
 export default Header;

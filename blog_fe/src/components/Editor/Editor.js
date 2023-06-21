@@ -15,104 +15,117 @@ import ImageTool from "@editorjs/image";
 import LinkTool from "@editorjs/link";
 import axios from "axios";
 import { URL_BACKEND } from "../../constant";
-const Editor = ({ onChangeValue }) => {
+import EditorJSHTML from "editorjs-html";
+import { useDispatch, useSelector } from "react-redux";
+import "./Editor.css";
+import { Button } from "@mui/material";
+import { passDataHtml } from "../../store/PostSlice"
+import { useNavigate } from "react-router";
+const Editor = () => {
+  const [dataPost, setDataPost] = useState(null);
   const editorRef = useRef(null);
-  console.log(onChangeValue);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const stateHtml = useSelector(state => state.Post.html);
+  const convertToHtml = (content) =>{
+    var editorJSHTML = new EditorJSHTML();
+    var html = editorJSHTML.parse(content);
+    return html.join("");
+  }
+  const SubmitData = () => {
+    dispatch(passDataHtml(dataPost));
+    setTimeout(()=>{
+       navigate("/post/5");
+    },2000);
+   
+  }
   useEffect(() => {
-    onChangeValue.dataCallback("Thang");
-  }, [onChangeValue.HandleSubmitPost]);
-  // const handleImageUpload = async (file) => {
-  //   const imageUrl = await uploadImageToServer(file);
-
-  //   if (editorRef.current) {
-  //     editorRef.current.blocks.getTool("image").uploader.uploadByFile(imageUrl);
-  //   }
-  // };
-
-  // const uploadImageToServer = async (file) => {
-  //   const formData = new FormData();
-  //   formData.append("file", file);
-  //   const response = await fetch(`${URL_BACKEND}/api/UploadImage`, {
-  //     method: "POST",
-  //     body: formData,
-  //   });
-
-  //   const data = await response.json();
-  //   return {
-  //     success: 1,
-  //     file: {
-  //       url: data.imageUrl,
-  //     },
-  //   };
-  // };
-
-  const editor = new EditorJS({
-    holder: "editorjs",
-    onReady: () => {
-      editorRef.current = editor;
-    },
-    onChange: async () => {
-      let content = await editor.saver.save();
-      console.log(content);
-    },
-    autofocus: true,
-    tools: {
-      delimiter: Delimiter,
-      header: Header,
-      table: Table,
-      list: {
-        class: List,
-        inlineToolbar: true,
-        config: {
-          defaultStyle: "unordered",
+    const editor = new EditorJS({
+      holder: "editorjs",
+      onReady: () => {
+        editorRef.current = editor;
+      },
+      onChange: async () => {
+        let content = await editor.saver.save();
+         let data =  convertToHtml(content);
+         setDataPost(data);
+        // let dataText = content.blocks;
+        // setDataPost(dataText);
+        // let dataContent = MatchHTML(content);
+        // console.log(dataContent);
+      },
+      autofocus: true,
+      tools: {
+        delimiter: Delimiter,
+        header: Header,
+        table: Table,
+        list: {
+          class: List,
+          inlineToolbar: true,
+          config: {
+            defaultStyle: "unordered",
+          },
         },
-      },
-      list: {
-        class: NestedList,
-        inlineToolbar: true,
-        config: {
-          defaultStyle: "unordered",
+        list: {
+          class: NestedList,
+          inlineToolbar: true,
+          config: {
+            defaultStyle: "unordered",
+          },
         },
-      },
-      inlineCode: {
-        class: InlineCode,
-        shortcut: "CMD+SHIFT+M",
-      },
-      linkTool: LinkTool,
+        inlineCode: {
+          class: InlineCode,
+          shortcut: "CMD+SHIFT+M",
+        },
+        linkTool: LinkTool,
 
-      image: {
-        class: ImageTool,
-        config: {
-          uploader: {
-            async uploadByFile(file) {
-              const formData = new FormData();
-              formData.append("file", file);
-              const response = await axios.post(`${URL_BACKEND}/api/UploadImage`, formData, {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              });
+        // image: {
+        //   class: ImageTool,
+        //   config: {
+        //     uploader: {
+        //       async uploadByFile(file) {
+        //         const formData = new FormData();
+        //         formData.append("file", file);
+        //         const response = await axios.post(`${URL_BACKEND}/api/UploadImage`, formData, {
+        //           headers: {
+        //             "Content-Type": "multipart/form-data",
+        //           },
+        //         });
+        //         return response;
+        //       },
+        //     },
+        //   },
+        // },
+        raw: RawTool,
+        code: CodeTool,
+        embed: {
+          class: Embed,
+          config: {
+            services: {
+              youtube: true,
+              coub: true,
             },
           },
         },
       },
-      raw: RawTool,
-      code: CodeTool,
-      embed: {
-        class: Embed,
-        config: {
-          services: {
-            youtube: true,
-            coub: true,
-          },
-        },
-      },
-    },
-  });
-  editorRef.current = editor;
+    });
+    editorRef.current = editor;
+  }, []);
 
-  return <div id="editorjs"></div>;
+
+  return (
+  <div>
+    <div id="editorjs"></div>
+      <Button
+      onClick={SubmitData}
+        sx={{ fontWeight: 500, fontSize: `16px`, marginTop: "20px" }}
+        variant="contained"
+      >
+        Create post
+      </Button>
+  </div>
+  );
+
 };
 
 export default Editor;

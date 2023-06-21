@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "5aQ5Z9CDn4D5BnquiRlt2MgHRFQIRo+iySbk0G3O/EpcOW7p5LMt1XCKTE9jpAz2qwk6K+nZ2jG3IGRVs0hpYQ==",
+  "dgSpecHash": "jenmZL13yMbrjHCpJ4WJQkw6NKmf1DGwcNfga0bhuCaDPW6rXiPBqCN1dY068W6zQSzJmunpBuMCc080huVTiQ==",
   "success": true,
   "projectFilePath": "D:\\DevWeb\\.NET\\WebBlog\\blog_backend\\blog_backend\\blog_backend.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\Administrator\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\cloudinary\\0.0.5\\cloudinary.0.0.5.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.aspnetcore.cors\\2.2.0\\microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",

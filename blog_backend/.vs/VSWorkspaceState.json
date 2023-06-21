@@ -5,6 +5,6 @@
     "\\blog_backend\\Controllers",
     "\\blog_backend\\Models"
   ],
-  "SelectedNode": "\\blog_backend\\Controllers\\TestController.cs",
+  "SelectedNode": "\\blog_backend\\Models\\AspNetUserClaim.cs",
   "PreviewInSolutionExplorer": false
 }

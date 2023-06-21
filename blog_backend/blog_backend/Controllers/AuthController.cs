@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+
+using blog_backend.Models;
+using blog_backend.Service;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace blog_backend.Controllers
 {
@@ -7,53 +13,100 @@ namespace blog_backend.Controllers
 
     public class AuthController : ControllerBase
     {
-        public AuthController()
-        {
+        private readonly HashPassword hashPassword;
+        private readonly BlogContext context;
 
+        public AuthController(HashPassword _hashPassword, BlogContext _context)
+        {
+            hashPassword = _hashPassword;
+            context = _context;
         }
         [HttpPost]
         public IActionResult Login(LoginModel loginModel)
         {
-            if (loginModel.username == "user")
+            string username = loginModel.username;
+            string password = loginModel.password;
+            var loginUsername = context.AspNetUsers.FirstOrDefaultAsync(data => data.UserName == username);
+            if (loginUsername == null)
             {
                 return new JsonResult(new
                 {
-                    message = "OK"
+                    message = "Tài khoản hoặc mật khẩu không đúng !",
+                    StatusCode = 404
                 });
 
             }
-            if (string.IsNullOrEmpty(loginModel.username) == true || string.IsNullOrEmpty(loginModel.password) == true)
+            if (loginUsername != null)
             {
-                return BadRequest(new
+                string getHassedPassword = loginUsername.Result.PasswordHash;
+                bool isLoginSuccess = hashPassword.VertifyPassword(password, getHassedPassword);
+                if (isLoginSuccess == true)
                 {
-                    message = "username or password is hollow"
+                    return new JsonResult(new
+                    {
+                        message = "Đăng nhập thành công !",
+                        StatusCode = 200
+                    });
+                }
+                else if (isLoginSuccess == false)
+                {
+                    return new JsonResult(new
+                    {
+                        message = "Tài khoản hoặc mật khẩu không đúng !",
+                        StatusCode = 404
+                    });
+                }
+            }
+            return new JsonResult(new
+            {
+                loginUsername,
+                message = "Ok"
+            });
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(LoginModel loginModel)
+        {
+            string username = loginModel.username;
+            string password = loginModel.password;
+            var isUsername = context.AspNetUsers.FirstOrDefault(v => v.UserName == username);
+            if (isUsername == null)
+            {
+                string passwordHashed = hashPassword.HashedPassword(password);
+                TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+                DateTimeOffset currentTime = TimeZoneInfo.ConvertTime(DateTimeOffset.Now, vietnamTimeZone);
+                string timestampString = currentTime.ToUnixTimeSeconds().ToString();
+                Random random = new Random();
+                int randomNumber = random.Next(1, 2001);
+                string userId = $"user{randomNumber}";
+                var create_user = new AspNetUsers
+                {
+                    IdUser = userId,
+                    UserName = username,
+                    PasswordHash = passwordHashed,
+                    SecurityStamp = timestampString
+                };
+                await context.AspNetUsers.AddAsync(create_user);
+                await context.SaveChangesAsync();
+                return Ok(new
+                {
+                    message = "register success!",
+                    StatusCode = 200,
                 });
             }
-            return Ok(new
+            return new JsonResult(new
             {
-                message = "success",
-                loginModel.username,
-                loginModel.password
+                message = "registered users!",
+                StatusCode = 400
             });
-            //Console.WriteLine(new
-            //{
-            //    dataLogin.username,
-            //    dataLogin.password
-            //});   
-            //return Ok(
-            //    new
-            //    {
-            //        message = "OK",
-            //        username = dataLogin.username,
-            //        password = dataLogin.password
 
-            //    }
-            //);
         }
     }
+
     public class LoginModel
     {
         public string username { get; set; }
         public string password { get; set; }
     }
+
 }

@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const notify = () =>
-    toast("🦄 Testing feature", {
+  const notify = (message) =>
+    toast(`🦄 ${message}`, {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -22,11 +22,12 @@ function Login() {
       theme: "light",
     });
   const HandleLogin = async () => {
-    notify();
-    // const response = await axios.post(`http://localhost:5156/api/login`, { username, password });
-    // if ((response.data.message = "success")) {
-    //   notify();
-    // }
+   
+    const response = await axios.post(`http://localhost:5156/api/Login`, { username, password });
+    console.log(response);
+    if(response.data.statusCode === 404){
+      notify(response.data.message);
+    }
   };
 
   return (
@@ -62,6 +63,7 @@ function Login() {
                 />
                 <Link className="col-5 forgot-password">Forgot my password ?</Link>
               </div>
+              <Link to={"/register"}>Do you have an account ?</Link>
             </div>
             <Button onClick={HandleLogin} className="col-12 mt-3 py-2" variant="contained">
               Submit

@@ -4,7 +4,7 @@ import { convertToRaw, EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import { Button, Input, TextField } from "@mui/material";
-import { createReactEditorJS } from 'react-editor-js';
+import { createReactEditorJS } from "react-editor-js";
 import { EDITOR_JS_TOOLS } from "../../service/tool/tool";
 import axios from "axios";
 import Editor from "../../components/Editor/Editor";
@@ -13,20 +13,15 @@ import { MuiFileInput } from "mui-file-input";
 function CreatePost() {
   const [file, setFile] = useState(null);
   const [newValue, setNewValue] = useState(null);
+  const [changeColorTitle, setColorTitle] = useState(false);
   const inputRef = useRef(null);
-   
+
   const handleChange = (newFile) => {
     setFile(newFile);
   };
-  const dataCallback = (value) => {
-      console.log(value);
-  } 
-const HandleSubmitPost = () => {
-      dataCallback();
-}
 
   return (
-    <div  className="container">
+    <div className="container">
       <h1 className="createPost-head">Create Post</h1>
       <div className="createPost-info">
         {/* <img
@@ -37,7 +32,6 @@ const HandleSubmitPost = () => {
       </div>
       <div className="container-text row">
         <div className="col-6">
-        
           <TextField className="col-12" id="outlined-basic" label="Title" variant="outlined" />
         </div>
         <div className="col-6">
@@ -46,17 +40,8 @@ const HandleSubmitPost = () => {
       </div>
       <div className="container-editor">
         <h1 className="text-description">Description</h1>
-        <div className="around-editor">
-          <Editor onChangeValue={{dataCallback,HandleSubmitPost}}/>
-        </div>
+        <Editor />
       </div>
-      <Button
-        onClick={HandleSubmitPost}
-        sx={{ fontWeight: 500, fontSize: `16px`, marginTop: "20px" }}
-        variant="contained"
-      >
-        Create post
-      </Button>
     </div>
   );
 }
