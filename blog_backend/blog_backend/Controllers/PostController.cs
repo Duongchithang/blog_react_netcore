@@ -16,11 +16,11 @@ namespace blog_backend.Controllers
         {
             context = _context;
         }
-        // GET: api/<PostController>
+
         [HttpPost]
-        public IActionResult CreatePost(string convertHtml)
+        public IActionResult CreatePost(string html)
         {
-            Console.WriteLine(convertHtml);
+
             //var newBlog = new Post
             //{
             //    IdPost = "01",

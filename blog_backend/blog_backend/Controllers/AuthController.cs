@@ -1,5 +1,4 @@
-﻿
-
+﻿using blog_backend.IResository;
 using blog_backend.Models;
 using blog_backend.Service;
 
@@ -15,11 +14,14 @@ namespace blog_backend.Controllers
     {
         private readonly HashPassword hashPassword;
         private readonly BlogContext context;
+        private readonly IJsonWebToken jwt;
 
-        public AuthController(HashPassword _hashPassword, BlogContext _context)
+        public AuthController(HashPassword _hashPassword, BlogContext _context, IJsonWebToken _jwt)
         {
+
             hashPassword = _hashPassword;
             context = _context;
+            jwt = _jwt;
         }
         [HttpPost]
         public IActionResult Login(LoginModel loginModel)
@@ -42,9 +44,11 @@ namespace blog_backend.Controllers
                 bool isLoginSuccess = hashPassword.VertifyPassword(password, getHassedPassword);
                 if (isLoginSuccess == true)
                 {
+                    var token = jwt.GenerateJsonWebToken();
                     return new JsonResult(new
                     {
                         message = "Đăng nhập thành công !",
+                        token,
                         StatusCode = 200
                     });
                 }
@@ -84,7 +88,8 @@ namespace blog_backend.Controllers
                     IdUser = userId,
                     UserName = username,
                     PasswordHash = passwordHashed,
-                    SecurityStamp = timestampString
+                    SecurityStamp = timestampString,
+                    ConcurrencyStamp = timestampString
                 };
                 await context.AspNetUsers.AddAsync(create_user);
                 await context.SaveChangesAsync();
